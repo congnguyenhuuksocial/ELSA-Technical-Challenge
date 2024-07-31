@@ -229,6 +229,7 @@ This detailed analysis provides a comprehensive view of how the acceptance crite
 To design the database for the quiz application, we will create tables that represent the core entities: users, quiz sessions, answers, scores, and the leaderboard. Below is the SQL code to create these tables, along with their relationships.
 
 ### Database Schema
+![elsa_system_design.drawio.png](images%2Felsa_system_design.drawio.png)
 
 ```sql
 -- Users table to store user information
