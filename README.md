@@ -220,7 +220,7 @@ This detailed analysis provides a comprehensive view of how the acceptance crite
 
 # System Design for a Quiz Application
 ---
-![elsa_system_assignments.drawio.png](images%2Felsa_system_assignments.drawio.png)
+![elsa_system_design.drawio.png](images%2Felsa_system_design.drawio.png)
 # CI/CD Pipeline for a Quiz Application
 ![elsa_system_assignments.drawio.png](images%2Felsa_system_assignments.drawio.png)
 
