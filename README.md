@@ -217,3 +217,109 @@ This analysis provides a detailed breakdown of the domain concepts, entities, se
 ### Conclusion
 
 This detailed analysis provides a comprehensive view of how the acceptance criteria can be modeled using Domain-Driven Design principles. It includes a clear breakdown of domain concepts, entities, services, aggregates, and domain events, ensuring that the system is both robust and maintainable.
+
+# Database design
+---
+To design the database for the quiz application, we will create tables that represent the core entities: users, quiz sessions, answers, scores, and the leaderboard. Below is the SQL code to create these tables, along with their relationships.
+
+### Database Schema
+
+```sql
+-- Users table to store user information
+CREATE TABLE Users (
+    ID VARCHAR(36) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    SessionID VARCHAR(36)
+);
+
+-- QuizSessions table to store quiz session information
+CREATE TABLE QuizSessions (
+    SessionID VARCHAR(36) PRIMARY KEY,
+    QuizID VARCHAR(36) NOT NULL,
+    Participants TEXT -- Could be a JSON array of user IDs
+);
+
+-- Answers table to store user answers
+CREATE TABLE Answers (
+    AnswerID VARCHAR(36) PRIMARY KEY,
+    UserID VARCHAR(36) NOT NULL,
+    QuestionID VARCHAR(36) NOT NULL,
+    Answer TEXT NOT NULL,
+    Timestamp TIMESTAMP NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- Scores table to store user scores
+CREATE TABLE Scores (
+    ScoreID VARCHAR(36) PRIMARY KEY,
+    UserID VARCHAR(36) NOT NULL,
+    Points INT NOT NULL,
+    Timestamp TIMESTAMP NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+
+-- Leaderboard table to store the leaderboard standings
+CREATE TABLE Leaderboard (
+    LeaderboardID VARCHAR(36) PRIMARY KEY,
+    SessionID VARCHAR(36) NOT NULL,
+    UserID VARCHAR(36) NOT NULL,
+    Rank INT NOT NULL,
+    Points INT NOT NULL,
+    FOREIGN KEY (SessionID) REFERENCES QuizSessions(SessionID),
+    FOREIGN KEY (UserID) REFERENCES Users(ID)
+);
+```
+
+### Explanation of the Tables
+
+1. **Users Table**
+    - **ID**: Unique identifier for each user.
+    - **Name**: The name of the user.
+    - **SessionID**: The ID of the session the user is participating in (nullable, as the user may not always be in a session).
+
+2. **QuizSessions Table**
+    - **SessionID**: Unique identifier for each quiz session.
+    - **QuizID**: Identifier for the quiz.
+    - **Participants**: A text field (or JSON) containing the IDs of users participating in the session.
+
+3. **Answers Table**
+    - **AnswerID**: Unique identifier for each answer.
+    - **UserID**: The ID of the user who submitted the answer.
+    - **QuestionID**: The ID of the question being answered.
+    - **Answer**: The actual answer text.
+    - **Timestamp**: The time when the answer was submitted.
+
+4. **Scores Table**
+    - **ScoreID**: Unique identifier for each score entry.
+    - **UserID**: The ID of the user to whom the score belongs.
+    - **Points**: The score points.
+    - **Timestamp**: The time when the score was recorded.
+
+5. **Leaderboard Table**
+    - **LeaderboardID**: Unique identifier for each leaderboard entry.
+    - **SessionID**: The ID of the session to which the leaderboard belongs.
+    - **UserID**: The ID of the user.
+    - **Rank**: The rank of the user in the leaderboard.
+    - **Points**: The points scored by the user.
+
+### Indexes
+
+To optimize the performance of the database, especially for queries that are frequently executed, we can add indexes:
+
+```sql
+CREATE INDEX idx_users_sessionid ON Users (SessionID);
+CREATE INDEX idx_answers_userid ON Answers (UserID);
+CREATE INDEX idx_scores_userid ON Scores (UserID);
+CREATE INDEX idx_leaderboard_sessionid ON Leaderboard (SessionID);
+CREATE INDEX idx_leaderboard_userid ON Leaderboard (UserID);
+```
+
+### Relationships and Foreign Keys
+
+The foreign key constraints ensure referential integrity:
+
+- `Answers` table references the `Users` table through `UserID`.
+- `Scores` table references the `Users` table through `UserID`.
+- `Leaderboard` table references the `QuizSessions` table through `SessionID` and the `Users` table through `UserID`.
+
+This database schema design ensures the core entities are well-defined and their relationships are maintained, which aligns with the requirements of the quiz application.
