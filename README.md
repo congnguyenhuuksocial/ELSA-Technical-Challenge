@@ -218,6 +218,9 @@ This analysis provides a detailed breakdown of the domain concepts, entities, se
 
 This detailed analysis provides a comprehensive view of how the acceptance criteria can be modeled using Domain-Driven Design principles. It includes a clear breakdown of domain concepts, entities, services, aggregates, and domain events, ensuring that the system is both robust and maintainable.
 
+# CI/CD Pipeline for a Quiz Application
+![elsa_system_assignments.drawio.png](images%2Felsa_system_assignments.drawio.png)
+
 # Database design
 ---
 To design the database for the quiz application, we will create tables that represent the core entities: users, quiz sessions, answers, scores, and the leaderboard. Below is the SQL code to create these tables, along with their relationships.
