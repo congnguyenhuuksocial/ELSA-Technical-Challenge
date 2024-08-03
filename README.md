@@ -221,6 +221,56 @@ This detailed analysis provides a comprehensive view of how the acceptance crite
 # System Design for a Quiz Application
 ---
 ![elsa_system_design.drawio.png](images%2Felsa_system_design.drawio.png)
+
+The provided diagram illustrates a comprehensive system architecture that integrates multiple services, databases, and monitoring tools within an AWS environment. Here's a detailed explanation of each component and their interactions:
+
+1. **AWS Cloud Services:**
+    - **Route 53**: This is AWS’s DNS service, handling domain name resolution for the system.
+    - **API Gateway**: It provides a unified API front for multiple backend services, including Quiz Service, Scoring Service, and Leaderboard Service.
+    - **Lambda Functions**: Serverless functions for various operations like authorizing requests (AuthLambda) and updating scores and standings (Update Score, Update Standing).
+    - **VPC (Virtual Private Cloud)**: This isolates and secures the environment for running the services.
+
+2. **Backend Services (BFF - Backend for Frontend):**
+    - **Quiz Service**: Manages quiz-related operations.
+    - **Scoring Service**: Handles score calculations and updates.
+    - **Leaderboard Service**: Manages leaderboard updates and standings.
+    - **Containers**: The services run in Docker containers orchestrated by AWS services, ensuring scalability and manageability.
+
+3. **Authentication and Authorization:**
+    - **Cognito**: AWS’s service for user authentication and authorization.
+    - **Lambda Authorizer**: A custom authorizer function for managing authentication logic before requests reach the API Gateway.
+
+4. **Databases:**
+    - **PostgreSQL**: Used for persistent storage of quiz, scoring, and leaderboard data. Each service has its dedicated database instance within a private subnet for security.
+    - **Redis**: Used for caching and real-time data handling, ensuring quick access to frequently used data.
+
+5. **Private Subnet:**
+    - **EC2 Instances**: Each service has its EC2 instance for more control over the environment, running the Quiz, Scoring, and Leaderboard services.
+    - **Security**: These instances are placed within a private subnet to restrict direct internet access, enhancing security.
+
+6. **Logging and Monitoring:**
+    - **FluentBit**: Collects logs from various services.
+    - **Datadog**: Aggregates logs and metrics for monitoring and alerting.
+    - **Prometheus**: Used for collecting metrics.
+    - **Grafana**: Provides dashboards for visualizing metrics and logs.
+    - **Slack**: Integrated for sending alerts and notifications to the development and operations teams.
+
+7. **Developer Interaction:**
+    - **SSO (Single Sign-On)**: Developers authenticate through a company SSO system.
+    - **SSH Tunnel**: Secure access to the private subnets and EC2 instances for maintenance and updates.
+
+8. **Event Handling and Synchronization:**
+    - **GraphQL**: Used for updating the leaderboard in real-time, ensuring that changes in scores and standings are immediately reflected.
+    - **Real-time Handling**: Managed through Lambda functions and a real-time database to handle updates promptly and efficiently.
+
+### Key Processes:
+- **User Interaction**: Devices interact with the system via APIs exposed by the API Gateway.
+- **Authorization**: Requests are authenticated through Cognito and the Lambda Authorizer.
+- **Service Coordination**: Backend services (Quiz, Scoring, Leaderboard) process requests and update the databases.
+- **Real-time Updates**: Changes in scores and standings are handled in real-time using GraphQL and Lambda functions.
+- **Monitoring and Alerts**: FluentBit, Datadog, Prometheus, and Grafana monitor system health, with alerts sent to Slack for quick response.
+
+This architecture ensures a secure, scalable, and efficient environment for running a quiz application with real-time scoring and leaderboard updates, along with robust monitoring and alerting mechanisms.
 # CI/CD Pipeline for a Quiz Application
 ![elsa_system_assignments.drawio.png](images%2Felsa_system_assignments.drawio.png)
 
