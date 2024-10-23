@@ -380,3 +380,7 @@ The foreign key constraints ensure referential integrity:
 - `Leaderboard` table references the `QuizSessions` table through `SessionID` and the `Users` table through `UserID`.
 
 This database schema design ensures the core entities are well-defined and their relationships are maintained, which aligns with the requirements of the quiz application.
+
+# Video Explanation
+---
+[Video Submission](https://drive.google.com/file/d/13iCAh_BVJnERSxhY4y9pPSe3mivLCSql/view?usp=sharing)
